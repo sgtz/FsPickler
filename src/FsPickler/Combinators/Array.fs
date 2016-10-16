@@ -52,6 +52,7 @@ type internal ArrayPickler =
             if isPrimitiveSerialized formatter ep then
 
                 formatter.BeginWriteObject tag ObjectFlags.None
+
                 formatter.WriteInt32 "length" array.Length
                 formatter.WritePrimitiveArray "array" array
                 formatter.EndWriteObject ()
@@ -83,11 +84,17 @@ type internal ArrayPickler =
 
             if isPrimitiveSerialized formatter ep then
 
-                let length = formatter.ReadInt32 "length"
-                let array = Array.zeroCreate<'T> length
-                r.EarlyRegisterArray array
-                formatter.ReadPrimitiveArray "array" array
-                array
+                formatter.ReadFullPrimitiveArray("array") |> function
+                | Some(untyArray) -> 
+                    let tyArray = untyArray :?> 'T[]
+                    r.EarlyRegisterArray tyArray
+                    tyArray
+                | None ->
+                    let length = formatter.ReadInt32 "length"
+                    let array = Array.zeroCreate<'T> length
+                    r.EarlyRegisterArray array
+                    formatter.ReadPrimitiveArray "array" array
+                    array
 
             elif ep.IsRecursiveType || formatter.PreferLengthPrefixInSequences then
 

@@ -334,6 +334,7 @@ type BinaryPickleReader internal (stream : Stream, encoding : Encoding, leaveOpe
             else br.ReadBytes(length)
 
         member __.IsPrimitiveArraySerializationSupported = not isForcedLittleEndianStream
+        member __.ReadFullPrimitiveArray _ = None
         member __.ReadPrimitiveArray _ array = blockRead(stream, array)
 
 /// <summary>

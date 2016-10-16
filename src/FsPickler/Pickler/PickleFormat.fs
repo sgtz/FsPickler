@@ -188,6 +188,11 @@ and IPickleFormatReader =
     /// <param name="target">target array.</param>
     abstract ReadPrimitiveArray : tag:string -> target:Array -> unit
 
+    /// when an array is available without using pickler (readLength, readValue), return Some array
+    /// most serialisers will return None, meaning this is not implemented.
+    /// this is provided to mashup FsPickler with other binary formats
+    abstract ReadFullPrimitiveArray : tag:string -> Array option
+
 /// Factory abstraction for binary pickle formats.
 type IPickleFormatProvider =
 

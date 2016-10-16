@@ -357,6 +357,7 @@ type XmlPickleReader internal (textReader : TextReader, leaveOpen) =
                 bytes
 
         member __.IsPrimitiveArraySerializationSupported = false
+        member __.ReadFullPrimitiveArray _ = raise <| new NotImplementedException()
         member __.ReadPrimitiveArray _ _ = raise <| new NotImplementedException()
 
         member __.Dispose () = 

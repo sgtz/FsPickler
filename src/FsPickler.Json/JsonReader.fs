@@ -254,6 +254,7 @@ type internal JsonPickleReader (jsonReader : JsonReader, omitHeader, useCustomSe
             bytes
 
         member __.IsPrimitiveArraySerializationSupported = false
+        member __.ReadFullPrimitiveArray _ = raise <| new NotImplementedException()
         member __.ReadPrimitiveArray _ _ = raise <| new NotImplementedException()
 
         member __.Dispose () = 
